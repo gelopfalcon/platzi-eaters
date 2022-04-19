@@ -29,14 +29,22 @@ contract PlatziFood {
         return platziFoods;
     }
 
-    function getPlatziFoodsByOwner(address owner)
+    function getPlatziFoodsByOwner()
         public
         view
         returns (PlatziFoodItem[] memory)
     {
-        PlatziFoodItem[] memory myfoods;
+        uint256 itemCount = 0;
+
         for (uint256 i = 0; i < platziFoods.length; i++) {
-            if (platziFoods[i].owner == owner) {
+            if (platziFoods[i].owner == msg.sender) {
+                itemCount += 1;
+            }
+        }
+
+        PlatziFoodItem[] memory myfoods = new PlatziFoodItem[](itemCount);
+        for (uint256 i = 0; i < platziFoods.length; i++) {
+            if (platziFoods[i].owner == msg.sender) {
                 myfoods[i] = platziFoods[i];
             }
         }
