@@ -8,6 +8,7 @@ import {
 import PlatziFood from '../utils/abi/PlatziFood.json';
 
 export default function AddDish() {
+            const router = useRouter();
     const [formInput, updateFormInput] = useState({ fileUrl: '', name: '', originCountry: '' });
 
     const addDish = async () => {
@@ -16,7 +17,6 @@ export default function AddDish() {
             const provider = new ethers.providers.Web3Provider(ethereum);    
             const signer = provider.getSigner();
             const contract = new ethers.Contract(abiPlatziFoodAddress, PlatziFood.abi, signer);
-            console.log(formInput);
             const transaction = await contract.addPlatziFood(formInput.fileUrl, formInput.name, formInput.originCountry);
             transaction.wait();
             router.push('/');
