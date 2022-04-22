@@ -3,9 +3,13 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import "../styles/globals.css";
+//1
+import { ethers } from "ethers";
+
 
 function MyApp({ Component, pageProps }) {
   const [walletAccount, setWalletAccount] = useState("");
+
   const checkIfMetaMaskIsConnected = async () => {
     try {
       const { ethereum } = window;
@@ -17,9 +21,11 @@ function MyApp({ Component, pageProps }) {
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
 
-      console.log(accounts);
+      //2
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+
       if (accounts.length != 0) {
-        console.log("Found account: ", accounts[0]);
         setWalletAccount(accounts[0]);
       } else {
         console.log("No authorized account");

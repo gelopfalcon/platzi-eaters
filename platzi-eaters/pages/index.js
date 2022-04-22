@@ -2,7 +2,26 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
+//1
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import {
+  abiPlatziFoodAddress
+} from '../config';
+
+import PlatziFood from '../utils/abi/PlatziFood.json';
+
+
 export default function Home() {
+  
+//4
+   const getAllDishes = async () => {
+    const provider = new ethers.providers.JsonRpcProvider(process.env.STAGING_ALCHEMY_KEY);
+    const contract = new ethers.Contract(abiPlatziFoodAddress, PlatziFood.abi, provider);
+    const dishes = await contract.getAllPlatziFoods();
+    console.log(dishes);
+  }
+
   const dishes = [
     {
       url:
@@ -11,8 +30,14 @@ export default function Home() {
       country: "Comida típica de Costa Rica",
     },
   ];
+  
+//5
+  useEffect(() => {
+    getAllDishes();
+  }, []);
 
   return (
+       
     <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: "1600px" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
