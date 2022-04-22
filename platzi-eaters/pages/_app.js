@@ -77,13 +77,13 @@ function MyApp({ Component, pageProps }) {
               <p className="text-4xl font-bold">Platzi Eaters</p>
               <div className="flex mt-4">
                 <Link href="/">
-                  <a className="mr-4 text-pink-500">Inicio</a>
+                  <a className="mr-4 text-green-500">Inicio</a>
                 </Link>
                 <Link href="/add-dish">
-                  <a className="mr-6 text-pink-500">Agregar platillos</a>
+                  <a className="mr-6 text-green-500">Agregar platillos</a>
                 </Link>
                 <Link href="/my-dishes">
-                  <a className="mr-6 text-pink-500">Mis platillos</a>
+                  <a className="mr-6 text-green-500">Mis platillos</a>
                 </Link>
               </div>
             </nav>
