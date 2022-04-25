@@ -3,12 +3,12 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import "../styles/globals.css";
-//1
 import { ethers } from "ethers";
 
 
 function MyApp({ Component, pageProps }) {
   const [walletAccount, setWalletAccount] = useState("");
+  const [isConnectedToRinbeky, setConnectedToRinbeky] = useState(true);
 
   const checkIfMetaMaskIsConnected = async () => {
     try {
@@ -17,6 +17,14 @@ function MyApp({ Component, pageProps }) {
         console.log("Check if Metamask is installed.");
       } else {
         console.log("Connected ", ethereum);
+
+        ethereum.on("chainChanged", function(networkId) {
+          if(parseInt(networkId) !== 4) {
+            setConnectedToRinbeky(false);
+          } else {
+            setConnectedToRinbeky(true);
+          }
+        });
       }
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
@@ -59,7 +67,19 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div>
-      {!walletAccount && (
+      
+      {
+        !isConnectedToRinbeky && (
+          <div className={styles.container}> 
+            <div className={styles.wrongNetwork}> 
+              <h1>Red Equivocada</h1>
+              <p> Por favor conectarse a la red Rinkeby en su MetaMask. Gracias :D </p> 
+            </div>
+          </div>
+        )
+      }
+
+      {(!walletAccount && isConnectedToRinbeky) && (
         <div className={styles.container}>
           <button
             className={styles.eth_connect_wallet_button}
@@ -70,7 +90,7 @@ function MyApp({ Component, pageProps }) {
         </div>
       )}
 
-      {walletAccount && (
+      {(walletAccount && isConnectedToRinbeky) && (
         <div>
           <main>
             <nav className="border-b p-6">
