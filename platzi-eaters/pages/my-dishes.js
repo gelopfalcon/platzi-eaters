@@ -12,23 +12,27 @@ import {
 import PlatziFood from '../utils/abi/PlatziFood.json';
 
 
-export default function Home() {
+export default function MyDishes() {
 
   const [dishes, setDishes] = useState([])
   
-//4
-   const getAllDishes = async () => {
-    const provider = new ethers.providers.JsonRpcProvider(process.env.STAGING_ALCHEMY_KEY);
-    const contract = new ethers.Contract(abiPlatziFoodAddress, PlatziFood.abi, provider);
-    const dishes = await contract.getAllPlatziFoods();
-    console.log(dishes);
-    setDishes(dishes);
+   const getMyDishes = async () => {
+    const { ethereum } = window;
+        if(ethereum) {
+            const provider = new ethers.providers.Web3Provider(ethereum);    
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(abiPlatziFoodAddress, PlatziFood.abi, signer);
+            const dishes = await contract.getPlatziFoodsByOwner();
+            console.log(dishes);
+            setDishes(dishes);
+        }
+
   }
 
 
-//5
+
   useEffect(() => {
-    getAllDishes();
+    getMyDishes();
   }, []);
 
   return (
